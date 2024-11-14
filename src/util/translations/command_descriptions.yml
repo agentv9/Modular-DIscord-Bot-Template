@@ -1,0 +1,8 @@
+﻿settings: {
+  de: "Bearbeiten Sie Ihre Benutzer- und Servereinstellungen",
+  es-ES: "editar la configuración de usuario y servidor"
+}
+info: {
+  de: "verschiedene Kundeninformationen anzeigen",
+  es-ES: "ver diversa información del cliente"
+}
