@@ -27,9 +27,23 @@ client.configHandler.load()
 client.translationHandler = new translationHandler(client)
 
 readLanguages()
+
+// - Function to create folders if they are missing
+
+function checkFolderExists(path) {
+	const exists = fs.existsSync(path);
+	if(!exists){
+		fs.mkdirSync(path);
+		return true;
+	}else {
+		return true;
+	}
+}
+
 // - Feature hander
 
 function readFeatures(dir) {
+	checkFolderExists(path.join(__dirname, dir))
 	const files = fs.readdirSync(path.join(__dirname, dir))
 	for(const file of files){
 		const stat = fs.lstatSync(path.join(__dirname, dir, file))
@@ -50,6 +64,7 @@ readFeatures("features")
 client.modules = []
 
 function readModules(dir) {
+	checkFolderExists(path.join(__dirname, dir))
 	const files = fs.readdirSync(path.join(__dirname, dir))
 	for(const file of files){
 		const stat = fs.lstatSync(path.join(__dirname, dir, file))
