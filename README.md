@@ -81,22 +81,22 @@ This template was developed to make creating new bots quick and easy. To aid in 
     Modules are exported classes, each one has 2 main things, the init function and the Main function, the init function is run when the bot is loading all its files and registering all its events, this is where you would contain your logic for registering commands or database models, aswell as any needed variable setup, the main function is run once everything is loaded and the bot starts.
 
     ```js
-  module.exports = class Tickets{
+  module.exports = class TestModule{
     
-    client
-    constructor(client) { // The discord.js bot instance is passed to every module
+      client
+      constructor(client) { // The discord.js bot instance is passed to every module
         
         this.client = client
         this.commandsDIR = path.join(__dirname, "commands") // If your module has commands, you can put the path here and the bot will automatically load them, this parameter is optional if your module has no commands.
-    }
+      }
 
-    async Init() { // This function will run on bot start, it should be used for all your initilization logic
+      async Init() { // This function will run on bot start, it should be used for all your initilization logic
       
-    }
+      }
 
-    async Main() { // This function will run once the bot has finished loading everything, this should be used for your main module logic
+      async Main() { // This function will run once the bot has finished loading everything, this should be used for your main module logic
         
-    }
+      }
   }
     ```
     To aid in module development and allow for modules to be fully self contained ive provided a couple helper functions to let you do things like registering commands or database models easily
