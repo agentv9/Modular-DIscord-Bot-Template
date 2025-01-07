@@ -81,7 +81,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
     Modules are exported classes, each one has 2 main functions aswell as a few optional class variables, the functions are a `Init` function ran while the bot is initalizing and a `Main` function which is ran after all modules are registered and loaded,  the optional Util variables are marked and explained in the code block below.
 
     ```js
-  module.exports = class TestModule{ // The class name is what will be shown in the console when the bot is starting up for the module name
+  module.exports = class TestModule { // The class name is what will be shown in the console when the bot is starting up for the module name
     
       client
       constructor(client) { // The discord.js bot instance is passed to every module
@@ -102,6 +102,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
   }
     ```
    
+  Every module should idealy contain a `readme.md` file explaining the setup and how the module works.
 
 
 - ## 4 - The config
