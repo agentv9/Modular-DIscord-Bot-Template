@@ -78,7 +78,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
 
     Modules add complex functionality to the bot and follow this below template exporting the module class, the below code should be placed within a `main.js` file inside the modules subdirectory located in the `modules` folder.
 
-    Modules are exported classes, each one has 2 main things, the init function and the Main function, the init function is run when the bot is loading all its files and registering all its events, this is where you would contain your logic for registering commands or database models, aswell as any needed variable setup, the main function is run once everything is loaded and the bot starts.
+    Modules are exported classes, each one has 2 main functions aswell as a few optional class variables, the functions are a `Init` function ran while the bot is initalizing and a `Main` function which is ran after all modules are registered and loaded,  the optional Util variables are marked and explained in the code block below.
 
     ```js
   module.exports = class TestModule{ // The class name is what will be shown in the console when the bot is starting up for the module name
@@ -87,6 +87,8 @@ This template was developed to make creating new bots quick and easy. To aid in 
       constructor(client) { // The discord.js bot instance is passed to every module
         
         this.client = client
+
+        // Optional Util variables
         this.commandsDIR = path.join(__dirname, "commands") // If your module has commands, you can put the path here and the bot will automatically load them, this parameter is optional if your module has no commands.
       }
 
