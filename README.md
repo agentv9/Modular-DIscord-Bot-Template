@@ -99,11 +99,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
       }
   }
     ```
-    To aid in module development and allow for modules to be fully self contained ive provided a couple helper functions to let you do things like registering commands or database models easily
-
-    `RegisterCommands(Path)` This takes in the local path to your modules command folder to register all your commands, module commands must follow the same command template listed in section 1
-    
-    `RegisterDBModels(Path)` This function also takes in a path to the directory containing your database models, all models follow a strict template for the bot to register them properly, please check the already created `user.js` model to see how its setup.
+   
 
 
 - ## 4 - The config
