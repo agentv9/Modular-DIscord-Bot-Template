@@ -81,7 +81,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
     Modules are exported classes, each one has 2 main things, the init function and the Main function, the init function is run when the bot is loading all its files and registering all its events, this is where you would contain your logic for registering commands or database models, aswell as any needed variable setup, the main function is run once everything is loaded and the bot starts.
 
     ```js
-  module.exports = class TestModule{
+  module.exports = class TestModule{ // The class name is what will be shown in the console when the bot is starting up for the module name
     
       client
       constructor(client) { // The discord.js bot instance is passed to every module
