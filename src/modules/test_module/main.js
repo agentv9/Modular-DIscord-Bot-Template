@@ -1,7 +1,7 @@
 const path = require("path")
 const fs = require("fs")
 
-module.exports = class Tickets{
+module.exports = class TestModule{ // The class name is what will be shown in the console when the bot is starting up for the module name
     
     client
     constructor(client) { // The discord.js bot instance is passed to every module
