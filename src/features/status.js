@@ -9,8 +9,8 @@ module.exports = async (bot) => {
         const presences = [
 
             {type: 3, message: `${numberMembers} Members!`},
-        //  {type: 3, message: `${bot.shard.count} Shards!`},
-        //  {type: 3, message: `${numberServers} Servers!`}
+            {type: 3, message: `${bot.shard.count} Shards!`},
+            {type: 3, message: `${numberServers} Servers!`}
         ]
         state = (state + 1) % presences.length
         var presence = presences[state]

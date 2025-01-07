@@ -37,12 +37,10 @@ This template was developed to make creating new bots quick and easy. To aid in 
 	    data: new SlashCommandBuilder()
 
 		    .setName('test') // This is the name which will show on discord 
-
-            .setNameLocalizations(commandTranslaitons("test")) // Loads the names of this command for different languages
-
+        .setNameLocalizations(commandTranslaitons("test")) // Loads the names of this command for different languages
 		    .setDescription('Testing command'), // Command description
 
-            // This is a typical slash command builder, check https://discord.js.org/docs/packages/builders/main/SlashCommandBuilder:Class for more information
+        // This is a typical slash command builder, check https://discord.js.org/docs/packages/builders/main/SlashCommandBuilder:Class for more information
 
 	    async execute(interaction, client) {
 
@@ -78,26 +76,34 @@ This template was developed to make creating new bots quick and easy. To aid in 
 
 - ## 3 - Modules
 
-    Modules add complex functionality to the bot and follow a template simular to that of commands, the below code should be placed within a `main.js` file inside the modules subdirectory located in the `modules` folder
+    Modules add complex functionality to the bot and follow this below template exporting the module class, the below code should be placed within a `main.js` file inside the modules subdirectory located in the `modules` folder.
+
+    Modules are exported classes, each one has 2 main things, the init function and the Main function, the init function is run when the bot is loading all its files and registering all its events, this is where you would contain your logic for registering commands or database models, aswell as any needed variable setup, the main function is run once everything is loaded and the bot starts.
 
     ```js
-
-    module.exports = {
-
-      name: "test", // This is the module name, this will be shown in the info command
-
-      async execute(client) {
-
-        // Module logic
-
-      }
-
+  module.exports = class Tickets{
+    
+    client
+    constructor(client) { // The discord.js bot instance is passed to every module
+        
+        this.client = client
+        this.commandsDIR = path.join(__dirname, "commands") // If your module has commands, you can put the path here and the bot will automatically load them, this parameter is optional if your module has no commands.
     }
 
+    async Init() { // This function will run on bot start, it should be used for all your initilization logic
+      
+    }
+
+    async Main() { // This function will run once the bot has finished loading everything, this should be used for your main module logic
+        
+    }
+  }
     ```
+    To aid in module development and allow for modules to be fully self contained ive provided a couple helper functions to let you do things like registering commands or database models easily
 
-    The purpose of seperating each module into its own subfolder is for ease of installation and development. Each module should be primarily self contained with its own `.md` file explaining setup.
-
+    `RegisterCommands(Path)` This takes in the local path to your modules command folder to register all your commands, module commands must follow the same command template listed in section 1
+    
+    `RegisterDBModels(Path)` This function also takes in a path to the directory containing your database models, all models follow a strict template for the bot to register them properly, please check the already created `user.js` model to see how its setup.
 
 
 - ## 4 - The config

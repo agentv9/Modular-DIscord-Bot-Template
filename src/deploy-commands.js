@@ -7,23 +7,28 @@ const fs = require('node:fs');
 const chalk = require("chalk")
 
 const commands = [];
-module.exports = () => {
+function deployCommands(client)  {
 
 function loadCommands(dir) {
-	const commandFiles = fs.readdirSync(path.join(__dirname, dir));
+	const commandFiles = fs.readdirSync(path.join( dir));
 	for (const file of commandFiles) {
-		const stat = fs.lstatSync(path.join(__dirname, dir, file))
+		const stat = fs.lstatSync(path.join( dir, file))
 		
 		if(stat.isDirectory()){
 			loadCommands(path.join("commands", file))
 		}else {
-			const command = require(path.join(__dirname, dir, file));
+			const command = require(path.join( dir, file));
 			commands.push(command.data.toJSON());
 		}
 	}
 }
 
-loadCommands("commands")
+loadCommands(path.join(__dirname, "commands"))
+
+for(const dir of client.commanddirs) {
+	loadCommands(dir)
+}
+
 // Construct and prepare an instance of the REST module
 const rest = new REST({ version: '10' }).setToken(process.env._TOKEN);
 // and deploy your commands!
@@ -44,3 +49,5 @@ const rest = new REST({ version: '10' }).setToken(process.env._TOKEN);
 	}
 })();
 }
+
+module.exports = {deployCommands}

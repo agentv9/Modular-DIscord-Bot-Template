@@ -8,9 +8,6 @@ const fs = require("fs")
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// - Register commands
-
-client.deployCommands = require("./deploy-commands")
 
 // - Database setup
 
@@ -62,6 +59,7 @@ readFeatures("features")
 // - Module hander
 
 client.modules = []
+client.commanddirs = []
 
 function readModules(dir) {
 	checkFolderExists(path.join(__dirname, dir))
@@ -71,12 +69,23 @@ function readModules(dir) {
 		if(stat.isDirectory()){
 			readModules(path.join(dir, file))
 		}else if (file == 'main.js') {
-			const feature = require(path.join(__dirname, dir, file))
-			console.log(chalk.magentaBright("[Module handler]: ") + `Loaded module: ${feature.name}`)
-			client.modules.push(feature.name)
-			feature.execute(client)
+			const moduleclass = require(path.join(__dirname, dir, file))
+			const module = new moduleclass(client)
+			console.log(chalk.magentaBright("[Module handler]: ") + `Loaded module: ${module.constructor.name}`)
+			if(Object.hasOwn(module, "commandsDIR")) {
+				client.commanddirs.push(module.commandsDIR)
+			}
+			client.modules.push(module)
+
+			module.Init(client)
 		}
 	}
+
+	for(const module of client.modules) {
+		module.Main()
+		
+	}
+
 }
 
 readModules("modules")
@@ -105,6 +114,8 @@ function readEvents(dir) {
 	}
 }
 
+
+
 readEvents("events")
 
 // - Command handler
@@ -114,15 +125,15 @@ client.cooldowns = new Collection();
 client.commands = new Collection();
 
 function readCommands(dir) {
-	const commandFiles = fs.readdirSync(path.join(__dirname, dir));
+	const commandFiles = fs.readdirSync(dir);
 	
 	for (const file of commandFiles) {
-		const stat = fs.lstatSync(path.join(__dirname, dir, file))
+		const stat = fs.lstatSync(path.join(dir, file))
 		
 		if(stat.isDirectory()){
 			readCommands(path.join("commands", file))
 		}else {
-			const command = require(path.join(__dirname, dir, file));
+			const command = require(path.join(dir, file));
 		// Set a new item in the Collection with the key as the command name and the value as the exported module
 		if ('data' in command && 'execute' in command) {
 			console.log(`${chalk.blueBright("[Commands]: ")}Loaded command: ${command.data.name}`)
@@ -134,9 +145,22 @@ function readCommands(dir) {
 	}
 }
 	
-readCommands("commands")
+readCommands(path.join(__dirname, "commands"))
 
-client.reloadCommands = readCommands
+for(const dir of client.commanddirs) {
+	readCommands(dir)
+	
+}
+
+client.LoadCommands = readCommands
+
+// - Register commands
+
+
+
+const {deployCommands} = require("./deploy-commands")
+
+deployCommands(client)
 
 
 client.login(process.env._TOKEN);
