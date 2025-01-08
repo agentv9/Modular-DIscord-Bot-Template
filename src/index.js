@@ -8,23 +8,6 @@ const fs = require("fs")
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-
-// - Database setup
-
-client.sql = sql()
-
-// - Config setup
-
-client.configHandler = new configHandler()
-
-client.configHandler.load()
-
-// - Translations setup
-
-client.translationHandler = new translationHandler(client)
-
-readLanguages()
-
 // - Function to create folders if they are missing
 
 function checkFolderExists(path) {
@@ -60,6 +43,8 @@ readFeatures("features")
 
 client.modules = []
 client.commanddirs = []
+client.modeldirs = []
+client.eventdirs = []
 
 function readModules(dir) {
 	checkFolderExists(path.join(__dirname, dir))
@@ -68,16 +53,23 @@ function readModules(dir) {
 		const stat = fs.lstatSync(path.join(__dirname, dir, file))
 		if(stat.isDirectory()){
 			readModules(path.join(dir, file))
-		}else if (file == 'main.js') {
+		}else if (file == 'module.js') {
 			const moduleclass = require(path.join(__dirname, dir, file))
 			const module = new moduleclass(client)
 			console.log(chalk.magentaBright("[Module handler]: ") + `Loaded module: ${module.constructor.name}`)
 			if(Object.hasOwn(module, "commandsDIR")) {
 				client.commanddirs.push(module.commandsDIR)
 			}
+			if(Object.hasOwn(module, "modelsDIR")) {
+				client.modeldirs.push(module.modelsDIR)
+			}
+			if(Object.hasOwn(module, "eventsDIR")) {
+				client.eventdirs.push(module.eventsDIR)
+			}
 			client.modules.push(module)
 
 			module.Init(client)
+			return;
 		}
 	}
 
@@ -93,13 +85,13 @@ readModules("modules")
 // - Events handler
 
 function readEvents(dir) {
-	const files = fs.readdirSync(path.join(__dirname, dir))
+	const files = fs.readdirSync(path.join( dir))
 	for(const file of files){
-		const stat = fs.lstatSync(path.join(__dirname, dir, file))
+		const stat = fs.lstatSync(path.join( dir, file))
 		if(stat.isDirectory()){
-			readEvents(path.join("events", file))
+			readEvents(path.join(dir, file))
 		}else if (file == 'main.js') {
-			const event = require(path.join(__dirname, dir, file))
+			const event = require(path.join( dir, file))
 		
 			if (event.once) {
 				client.once(event.name, (...args) => event.execute(client, ...args));
@@ -116,7 +108,12 @@ function readEvents(dir) {
 
 
 
-readEvents("events")
+readEvents(path.join(__dirname, "events"))
+
+for(const dir of client.eventdirs) {
+	readEvents(dir)
+}
+
 
 // - Command handler
 
@@ -156,11 +153,25 @@ client.LoadCommands = readCommands
 
 // - Register commands
 
-
-
 const {deployCommands} = require("./deploy-commands")
 
 deployCommands(client)
+
+// - Database setup
+
+client.sql = sql(client)
+
+// - Config setup
+
+client.configHandler = new configHandler()
+
+client.configHandler.load()
+
+// - Translations setup
+
+client.translationHandler = new translationHandler(client)
+
+readLanguages()
 
 
 client.login(process.env._TOKEN);

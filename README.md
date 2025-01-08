@@ -88,8 +88,10 @@ This template was developed to make creating new bots quick and easy. To aid in 
         
         this.client = client
 
-        // Optional Util variables
-        this.commandsDIR = path.join(__dirname, "commands") // If your module has commands, you can put the path here and the bot will automatically load them, this parameter is optional if your module has no commands.
+        // Optional variables, if any of these are set the bot will attempt to load the specified paths.
+        this.commandsDIR = path.join(__dirname, "commands") // Path to your modules command directory
+        this.modelsDIR = path.join(__dirname, "models") // Path to your modules models directory
+        this.eventsDIR = path.join(__dirname, "events") // Path to your modules events directory (Check the events section farther down the docs to see how events work!)
       }
 
       async Init() { // This function will run on bot start, it should be used for all your initilization logic
@@ -177,7 +179,7 @@ This template was developed to make creating new bots quick and easy. To aid in 
 
 - ## 6 - Events
 
-    To make handling the different events the `discord.js` client spllies easier ive built in a event handler, events follow a simular structure to modules with a few differences, that being name will be a discord.js event, aswell as the addition of a `once` parameter which will determine if the event will run only the first time the event is fired or every time.
+    To make handling the different events the `discord.js` client supplies easier ive built in a event handler, events follow a simular structure to modules with a few differences, that being name will be a discord.js event, aswell as the addition of a `once` parameter which will determine if the event will run only the first time the event is fired or every time. note: events must be placed within a subdirectory within the `events` folder, the event file must be named `main.js`, the folder name does not matter but it must be in a subdirectory
 
     ```js
 

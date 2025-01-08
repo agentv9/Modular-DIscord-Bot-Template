@@ -5,7 +5,7 @@ const fs = require("fs")
 const path = require("path")
 
 
-module.exports = () => {
+module.exports = (client) => {
   let sequelize
     if(process.env.DATABASE_DIALECT === 'sqlite'){
        sequelize = new Sequelize({
@@ -37,21 +37,24 @@ module.exports = () => {
 
      
       function readModels(dir) {
-        const files = fs.readdirSync(path.join(__dirname, dir))
+        const files = fs.readdirSync(path.join( dir))
         for(const file of files){
-          const stat = fs.lstatSync(path.join(__dirname, dir, file))
+          const stat = fs.lstatSync(path.join( dir, file))
           if(stat.isDirectory()){
             readModels(path.join("models", file))
           }else  {
-            const model = require(path.join(__dirname, dir, file))
+            const model = require(path.join( dir, file))
             console.log(chalk.greenBright("[Database]: ") + `Loaded model: ${file.split(".js")[0]}`)
             model(sequelize, DataTypes)
           }
         }
       }
       
-      readModels("models");
+      readModels(path.join(__dirname, "models"));
 
+      for(const dir of client.modeldirs) {
+        readModels(dir)
+      }
 
       (async () => {
         await sequelize.sync();

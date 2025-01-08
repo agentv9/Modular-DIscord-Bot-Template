@@ -8,6 +8,8 @@ module.exports = class TestModule{ // The class name is what will be shown in th
         
         this.client = client
         this.commandsDIR = path.join(__dirname, "commands")
+        this.modelsDIR = path.join(__dirname, "models")
+        this.eventsDIR = path.join(__dirname, "events")
     }
 
     async Init() { // This function will run on bot start, it should be used for all your initilization logic
