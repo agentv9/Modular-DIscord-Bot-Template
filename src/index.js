@@ -68,16 +68,10 @@ function readModules(dir) {
 			}
 			client.modules.push(module)
 
-			module.Init(client)
+		
 			return;
 		}
 	}
-
-	for(const module of client.modules) {
-		module.Main()
-		
-	}
-
 }
 
 readModules("modules")
@@ -131,12 +125,12 @@ function readCommands(dir) {
 			readCommands(path.join("commands", file))
 		}else {
 			const command = require(path.join(dir, file));
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		
 		if ('data' in command && 'execute' in command) {
 			console.log(`${chalk.blueBright("[Commands]: ")}Loaded command: ${command.data.name}`)
 			client.commands.set(command.data.name, command);
 		} else {
-			console.log(`${chalk.red("[WARNING]:")}The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(`${chalk.red("[WARNING]:")}The command at ${path.join(dir, file)} is missing a required "data" or "execute" property.`);
 			}	
 		}
 	}
@@ -173,5 +167,13 @@ client.translationHandler = new translationHandler(client)
 
 readLanguages()
 
+// - Initialize all bot modules
+for(const module of client.modules) {
+	module.Init()
+}
+
+for(const module of client.modules) {
+	module.Main()
+}
 
 client.login(process.env._TOKEN);
