@@ -16,9 +16,6 @@ module.exports = {
 
 			let thing = await client.translationHandler.getTranslation("test", interaction.user)
 
-			client.reloadCommands("commands")
-			client.deployCommands()
-
            interaction.reply({content: `${thing}`});
 		
 			},
