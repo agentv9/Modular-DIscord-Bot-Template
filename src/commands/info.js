@@ -48,11 +48,6 @@ module.exports = {
                 .setTitle(`client info`)
                 .addFields([
                   {
-                      name: "Developed by",
-                      value: "[Salvador Dynamics](https://salvadordynamics.com)",
-                      inline: true
-                  },
-                  {
                       name: `Misc`,
                       value: `
                       Node.js: ${process.version}
