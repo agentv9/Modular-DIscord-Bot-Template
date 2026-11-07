@@ -1,29 +1,26 @@
 {
-  "name": "bot",
+  "name": "modular_bot_template",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/shard.js",
-  "scripts": {
-    "test": "node src/deploy-commands.js",
-    "jest": "jest"
+  "description": "modular bot template built using discord.js to be used as the foundation for quickly creating new bots",
+  "main": "bot.js",
+  "repository": "https://github.com/agentv9/Modular-DIscord-Bot-Template",
+  "author": "kaseknife95",
+  "license": "MIT",
+  "imports": {
+    "#core/*": "./src/core/*.js",
+    "#modules/*": "./src/modules/*.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/bot.js",
+    "dev": "tsx src/bot.ts"
+  },
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "chalk": "^4.1.2",
-    "discord.js": "^14.6.0",
-    "dotenv": "^16.0.3",
-    "moment": "^2.29.4",
-    "ms-prettify": "^1.4.0",
-    "mysql2": "^3.9.3",
-    "node-cron": "^3.0.2",
-    "pg": "^8.11.5",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.2",
-    "sqlite3": "^5.1.7",
-    "write-yaml-file": "^5.0.0",
-    "yaml": "^2.4.1"
+    "discord.js": "^14.27.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
   }
 }
